@@ -1,7 +1,7 @@
 CREATE TABLE tasks (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  description VARCHAR(255) NOT NULL,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
   time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   completed BOOLEAN DEFAULT false
 );

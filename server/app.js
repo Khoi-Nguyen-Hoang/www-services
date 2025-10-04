@@ -4,11 +4,13 @@ import { logger } from "@hono/hono/logger";
 
 import postgres from "postgres";
 
+import * as taskControl from "./task-control.js"
+
 const app = new Hono();
 
 app.use("/*", cors());
 app.use("/*", logger());        //For logging requests to this URL
-
+/*
 const sql = postgres();
 
 app.get("/", (c) => c.json({ message: "Hello world!" }));
@@ -22,22 +24,10 @@ app.post("/", async (c) => {
   const result = await sql.unsafe(query);
   return c.json(result);
 });
-
-app.post("/books", (c) => {
-  // Create
-});
-
-
-app.get("/books", (c) => {
-  // Read
-});
-
-app.put("/books/:id", (c) => {
-  // Update
-});
-
-app.delete("/books/:id", (c) => {
-  // Delete
-});
+*/
+app.post("/tasks", taskControl.createTask);
+app.get("/tasks/:id", taskControl.showTask);
+app.post("/tasks/:id", taskControl.updateTask);
+app.post("/tasks/:id/delete", taskControl.deleteTask);
 
 export default app;
