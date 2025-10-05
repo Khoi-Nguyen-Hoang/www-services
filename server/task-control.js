@@ -14,7 +14,9 @@ const createTask = async (c) => {
 const showTask = async (c) => {
   const id = c.req.param('id');
 
-  return c.json(taskService.readTask(id));
+  const result = taskService.readTask(id)
+
+  return c.json(result);
 }
 
 const updateTask = async (c) => {
@@ -32,4 +34,10 @@ const deleteTask = async (c) => {
   return c.json({ message: "task deleted" }, 200);
 }
 
-export { createTask, showTask, updateTask, deleteTask }
+const listAllTasks = async (c) => {
+  const result = await taskService.listAllTasks();
+
+  return c.json(result, 200);
+}
+
+export { createTask, showTask, updateTask, deleteTask, listAllTasks }

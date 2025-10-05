@@ -2,56 +2,74 @@ import postgres from "postgres";
 
 const sql = postgres();
 
-//TODO: use a different ID system than "id SERIAL PRIMARY KEY"
-
 //Create a new task
 const createTask = async (task) => {
+  const id = crypto.randomUUID();
+  
   const { name, description } = task;
   
   const result = await sql`
-    INSERT INTO tasks (name, description)
-    VALUES (${name}, ${description});
+    INSERT INTO tasks (id, name, description)
+    VALUES (${id}, ${name}, ${description})
+    RETURNING *;
   `;
 
-  console.log(result);
+  console.log(result[0]);
 }
 
-//Get all tasks with name
+//Get task with id
 const readTask = async (id) => {
   const result = await sql`
     SELECT * FROM tasks WHERE id=${id};
   `;
 
-  console.log(result);
+  return result[0];
 }
 
-//Update a task with a given ID
+//Update a task of a given ID
 const updateTask = async (id, task) => {
   const { name, description } = task;
 
   const result = await sql`
     UPDATE tasks
     SET name=${name}, description=${description}, time=CURRENT_TIMESTAMP
-    WHERE id=${id};
+    WHERE id=${id}
+    RETURNING *;
   `;
 
-  console.log(result);
+  console.log(result[0]);
 }
 
 //Delete a task 
 const deleteTask = async (id) => {
-  const result = await sql`DELETE FROM tasks WHERE id=${id};`;
+  const result = await sql`DELETE FROM tasks WHERE id=${id} RETURNING *;`;
 
-  console.log(result);
+  console.log(result[0]);
 }
 
-const listTasks = async () => {
+const listAllTasks = async () => {
   const result = await sql`
-    SELECT * FROM tasks WHERE name=${name}
+    SELECT * FROM tasks
     ORDER BY time DESC;
   `;
 
   return result;
 }
 
-export { createTask, readTask, updateTask, deleteTask, listTasks }
+const markTaskAsComplete = async (id) => {
+  const result = await sql `
+    UPDATE tasks
+    SET completed=${true}, time=CURRENT_TIMESTAMP
+    WHERE id=${id}
+  `;
+}
+
+const markTaskAsIncomplete = async (id) => {
+  const result = await sql `
+    UPDATE tasks
+    SET completed=${false}, time=CURRENT_TIMESTAMP
+    WHERE id=${id}
+  `;
+}
+
+export { createTask, readTask, updateTask, deleteTask, listAllTasks, markTaskAsComplete, markTaskAsIncomplete }

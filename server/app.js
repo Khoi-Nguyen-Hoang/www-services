@@ -25,9 +25,13 @@ app.post("/", async (c) => {
   return c.json(result);
 });
 */
+app.get("/tasks/list", taskControl.listAllTasks);     //For testing listAllTasks function, should be deleted    
+
 app.post("/tasks", taskControl.createTask);
 app.get("/tasks/:id", taskControl.showTask);
 app.post("/tasks/:id", taskControl.updateTask);
 app.post("/tasks/:id/delete", taskControl.deleteTask);
+
+
 
 export default app;
