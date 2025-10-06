@@ -2,8 +2,6 @@ import { Hono } from "@hono/hono";
 import { cors } from "@hono/hono/cors";
 import { logger } from "@hono/hono/logger";
 
-import postgres from "postgres";
-
 import * as taskControl from "./task-control.js"
 
 const app = new Hono();
@@ -25,13 +23,10 @@ app.post("/", async (c) => {
   return c.json(result);
 });
 */
-app.get("/tasks/list", taskControl.listAllTasks);     //For testing listAllTasks function, should be deleted    
-
+app.get("/tasks", taskControl.listAllTasks);    
 app.post("/tasks", taskControl.createTask);
 app.get("/tasks/:id", taskControl.showTask);
 app.post("/tasks/:id", taskControl.updateTask);
 app.post("/tasks/:id/delete", taskControl.deleteTask);
-
-
 
 export default app;
