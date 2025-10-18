@@ -23,7 +23,7 @@ app.post("/", async (c) => {
   return c.json(result);
 });
 */
-app.get("/tasks", taskControl.listAllTasks);    
+app.get("/tasks", taskControl.listAllTasks);
 app.post("/tasks", taskControl.createTask);
 app.get("/tasks/:id", taskControl.showTask);
 app.post("/tasks/:id", taskControl.updateTask);
